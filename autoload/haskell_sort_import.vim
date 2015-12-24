@@ -2,15 +2,11 @@
 " Filename: autoload/haskell_sort_import.vim
 " Author: itchyny
 " License: MIT License
-" Last Change: 2015/12/21 07:51:25.
+" Last Change: 2015/12/25 08:54:36.
 " =============================================================================
 
 let s:save_cpo = &cpo
 set cpo&vim
-
-function! s:sorter(x, y) abort
-  return (matchstr(a:x, 'import *\%(qualified\)\? *\zs\S\+') > matchstr(a:y, 'import *\%(qualified\)\? *\zs\S\+')) * 2 - 1
-endfunction
 
 function! haskell_sort_import#sort() abort
   let start = 0
@@ -20,18 +16,26 @@ function! haskell_sort_import#sort() abort
       if start == 0
         let start = i
       endif
-    elseif start > 0
-      let end = i
-      break
+    endif
+    if getline(i) !~# '^\s*\<import\>' && start > 0
+      call s:sort(start, i - 1)
+      let start = 0
+    elseif i == line('$') && start > 0
+      call s:sort(start, i)
+      let start = 0
     endif
   endfor
-  if start > 0 && end == 0
-    let end = line('$')
-  endif
-  if start > 0 && end > start
-    let lines = map(range(start, end), 'getline(v:val)')
+endfunction
+
+function! s:sorter(x, y) abort
+  return (matchstr(a:x, 'import *\%(qualified\)\? *\zs\S\+') > matchstr(a:y, 'import *\%(qualified\)\? *\zs\S\+')) * 2 - 1
+endfunction
+
+function! s:sort(start, end) abort
+  if a:start > 0 && a:end > a:start
+    let lines = map(range(a:start, a:end), 'getline(v:val)')
     if join(lines) !=# join(sort(lines, function('s:sorter')))
-      call setline(start, sort(lines, function('s:sorter')))
+      call setline(a:start, sort(lines, function('s:sorter')))
     endif
   endif
 endfunction
