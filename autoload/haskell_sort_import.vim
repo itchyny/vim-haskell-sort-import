@@ -2,7 +2,7 @@
 " Filename: autoload/haskell_sort_import.vim
 " Author: itchyny
 " License: MIT License
-" Last Change: 2015/12/25 08:54:36.
+" Last Change: 2016/01/09 12:56:47.
 " =============================================================================
 
 let s:save_cpo = &cpo
@@ -11,33 +11,57 @@ set cpo&vim
 function! haskell_sort_import#sort() abort
   let start = 0
   let end = 0
+  let continuing = 0
+  let lines = []
+  let import = []
   for i in range(1, line('$'))
-    if getline(i) =~# '^\s*\<import\>'
+    let line = getline(i)
+    if line =~# '^\s*\<import\>'
+      if len(import) > 0
+        call add(lines, import)
+      endif
+      let import = [line]
+      let continuing = line =~# '\v^\s*import\s+(qualified\s+)?[[:alnum:].]+\s*\([^()]*$'
       if start == 0
         let start = i
       endif
-    endif
-    if getline(i) !~# '^\s*\<import\>' && start > 0
-      call s:sort(start, i - 1)
+    elseif continuing
+      call add(import, line)
+      let continuing = line !~# '\v^[^()]*\)$'
+    elseif start > 0
+      call add(lines, import)
+      call s:sort(start, lines)
       let start = 0
-    elseif i == line('$') && start > 0
-      call s:sort(start, i)
-      let start = 0
+      let continuing = 0
+      let lines = []
+      let import = []
     endif
   endfor
+  if start > 0
+    call add(lines, import)
+    call s:sort(start, lines)
+  endif
 endfunction
 
 function! s:sorter(x, y) abort
-  return (matchstr(a:x, 'import *\%(qualified\)\? *\zs\S\+') > matchstr(a:y, 'import *\%(qualified\)\? *\zs\S\+')) * 2 - 1
+  let pattern = '\v^import\s+(qualified\s+)?\zs[[:alnum:].]+'
+  return (matchstr(a:x[0], pattern) > matchstr(a:y[0], pattern)) ? 1 : -1
 endfunction
 
-function! s:sort(start, end) abort
-  if a:start > 0 && a:end > a:start
-    let lines = map(range(a:start, a:end), 'getline(v:val)')
-    if join(lines) !=# join(sort(lines, function('s:sorter')))
-      call setline(a:start, sort(lines, function('s:sorter')))
+function! s:sort(start, lines) abort
+  if a:start > 0 && len(a:lines) > 1
+    if join(a:lines) !=# join(sort(a:lines, function('s:sorter')))
+      call setline(a:start, s:concat(sort(a:lines, function('s:sorter'))))
     endif
   endif
+endfunction
+
+function! s:concat(xs) abort
+  let ret = []
+  for x in a:xs
+    let ret += x
+  endfor
+  return ret
 endfunction
 
 let &cpo = s:save_cpo
