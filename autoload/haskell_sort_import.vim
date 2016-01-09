@@ -2,7 +2,7 @@
 " Filename: autoload/haskell_sort_import.vim
 " Author: itchyny
 " License: MIT License
-" Last Change: 2016/01/09 13:18:33.
+" Last Change: 2016/01/09 14:05:30.
 " =============================================================================
 
 let s:save_cpo = &cpo
@@ -10,7 +10,6 @@ set cpo&vim
 
 function! haskell_sort_import#sort() abort
   let start = 0
-  let end = 0
   let continuing = 0
   let lines = []
   let import = []
