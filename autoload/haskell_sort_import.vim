@@ -2,7 +2,7 @@
 " Filename: autoload/haskell_sort_import.vim
 " Author: itchyny
 " License: MIT License
-" Last Change: 2016/01/10 09:29:15.
+" Last Change: 2016/01/10 09:49:38.
 " =============================================================================
 
 let s:save_cpo = &cpo
@@ -49,8 +49,9 @@ endfunction
 
 function! s:sort(start, lines) abort
   if a:start > 0 && len(a:lines) > 1
-    if join(a:lines) !=# join(sort(a:lines, function('s:sorter')))
-      call setline(a:start, s:concat(sort(a:lines, function('s:sorter'))))
+    let sorted = sort(deepcopy(a:lines), function('s:sorter'))
+    if a:lines !=# sorted
+      call setline(a:start, s:concat(sorted))
     endif
   endif
 endfunction
