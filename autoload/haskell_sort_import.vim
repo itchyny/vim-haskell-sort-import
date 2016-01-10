@@ -2,7 +2,7 @@
 " Filename: autoload/haskell_sort_import.vim
 " Author: itchyny
 " License: MIT License
-" Last Change: 2016/01/09 14:05:30.
+" Last Change: 2016/01/10 09:29:15.
 " =============================================================================
 
 let s:save_cpo = &cpo
@@ -26,7 +26,7 @@ function! haskell_sort_import#sort() abort
       endif
     elseif continuing
       call add(import, line)
-      let continuing = line !~# '\v^([^()]|\([^()]+\))*\)$'
+      let continuing = line !~# '\v^([^()]|\([^()]+\))*\)(\s*--.*)?$'
     elseif start > 0
       call add(lines, import)
       call s:sort(start, lines)
