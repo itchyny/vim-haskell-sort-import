@@ -1,0 +1,35 @@
+*haskell_sort_import.txt*	Sort import statements in Haskell codes
+
+Version: 0.0
+Author: itchyny (https://github.com/itchyny)
+License: MIT License
+Repository: https://github.com/itchyny/vim-haskell-sort-import
+Last Change: 2016/01/11 17:09:22.
+
+CONTENTS					*haskell-sort-import-contents*
+
+Introduction				|haskell-sort-import-introduction|
+Commands				|haskell-sort-import-commands|
+Changelog				|haskell-sort-import-changelog|
+
+==============================================================================
+INTRODUCTION					*haskell-sort-import-introduction*
+
+The *haskell-sort-import* plugin provides a command to sort import statements
+for Haskell codes.
+
+------------------------------------------------------------------------------
+COMMANDS					*haskell-sort-import-commands*
+
+:HaskellSortImport
+						*:HaskellSortImport*
+	Sort import statements in the current buffer.
+
+==============================================================================
+CHANGELOG					*haskell-sort-import-changelog*
+
+0.0	2015-12-23 -
+	- Initial commit and implementation
+
+==============================================================================
+vim:tw=78:sw=4:ts=8:ft=help:norl:noet:
