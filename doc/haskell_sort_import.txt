@@ -4,7 +4,7 @@ Version: 0.0
 Author: itchyny (https://github.com/itchyny)
 License: MIT License
 Repository: https://github.com/itchyny/vim-haskell-sort-import
-Last Change: 2016/01/11 17:09:22.
+Last Change: 2016/01/23 18:28:12.
 
 CONTENTS					*haskell-sort-import-contents*
 
@@ -24,6 +24,12 @@ COMMANDS					*haskell-sort-import-commands*
 :HaskellSortImport
 						*:HaskellSortImport*
 	Sort import statements in the current buffer.
+
+	This command can be registered to the |BufWritePre| event. 
+	For example, in ftplugin/haskell.vim, you can write >
+		autocmd BufWritePre <buffer> HaskellSortImport
+<	Then the plugin automatically sorts import statements when you save a
+	Haskell file.
 
 ==============================================================================
 CHANGELOG					*haskell-sort-import-changelog*
