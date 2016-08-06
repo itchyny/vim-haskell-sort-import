@@ -2,7 +2,7 @@
 " Filename: autoload/haskell_sort_import.vim
 " Author: itchyny
 " License: MIT License
-" Last Change: 2016/01/23 00:03:35.
+" Last Change: 2016/08/06 13:19:05.
 " =============================================================================
 
 let s:save_cpo = &cpo
@@ -44,7 +44,9 @@ endfunction
 
 function! s:sorter(x, y) abort
   let pattern = '\v^import\s+(qualified\s+)?\zs[[:alnum:].]+'
-  return matchstr(a:x[0], pattern) > matchstr(a:y[0], pattern) ? 1 : -1
+  let xs = matchstr(a:x[0], pattern)
+  let ys = matchstr(a:y[0], pattern)
+  return xs > ys ? 1 : xs ==# ys ? 0 : -1
 endfunction
 
 function! s:sort(start, lines) abort
