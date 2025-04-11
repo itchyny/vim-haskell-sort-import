@@ -1,3 +1,3 @@
-import C (ca, cb, cc) -- X
-import B (ba, bb, bc) -- X
-import A (aa, ab, ac) -- X
+import C (cb, cc, ca) -- Z
+import B (bc, bb, ba) -- Y
+import A (ab, aa, ac) -- X

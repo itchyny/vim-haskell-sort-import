@@ -6,4 +6,4 @@ import B ( (<>),
 import C ( (<>), (<+>),
            (<*>) )
 import D
-import E ( (<>), (<+>), (<*>) )
+import E ( (<*>), (<+>), (<>) )
